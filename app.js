@@ -1,3 +1,5 @@
+const config = require("config");
+const debug = require("debug")("app:startup");
 const express = require("express");
 const app = express();
 const Joi = require("joi");
@@ -5,6 +7,9 @@ const sequelize = require("./util/db");
 const Product = require("./model/product");
 const helmet = require("helmet");
 const morgan = require("morgan");
+
+app.set("view engine", "pug");
+app.set("views", "./views");
 
 // middleware to convert the input in JSON format
 app.use(express.json());
@@ -36,23 +41,16 @@ async function s() {
     });
 }
 
+// configuration
+// console.log("Application name: " + config.get("name"));
+// console.log("Mail server: " + config.get("mail.host"));
+// console.log("Mail password: " + config.get("mail.password"));
+
 // get request
-// app.get("", (req, res) => {
-//   res.send("Input received");
-// });
+app.get("", (req, res) => {
+  res.render("views.pug", { title: "my expree", message: "bank" });
+});
 
-// input validation
-// app.post("/api/course", (req, res) => {
-//   const schema = Joi.object({
-//     name: Joi.string().min(5).required(),
-//   });
-
-//   const { error, value } = schema.validate({ name: req.body.name });
-
-//   if (error) {
-//     res.send(error.message);
-//   } else res.send(value);
-// });
 // s();
 const port = process.env.PORT || 3000;
 
