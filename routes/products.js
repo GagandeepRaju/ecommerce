@@ -1,13 +1,29 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/api/products", (req, res) => {
+router.get("/", (req, res) => {
+  // get all products
   res.send("Products");
 });
 
-router.post("/api/add-product", (req, res) => {
+router.post("/add-product", (req, res) => {
+  // add new product
   res.send("add product");
 });
+
+// change existing product
+router.put("/:id", (req, res) => {
+  //
+  res.send("product updated");
+});
+
+// delete product
+router.delete("/:id", (req, res) => {
+  //
+  res.send("product delete");
+});
+
+module.exports = router;
 
 // input validation
 
@@ -22,5 +38,3 @@ router.post("/api/add-product", (req, res) => {
 //     res.send(error.message);
 //   } else res.send(value);
 // });
-
-module.exports = router;

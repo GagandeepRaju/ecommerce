@@ -4,12 +4,12 @@ const express = require("express");
 const app = express();
 const Joi = require("joi");
 const sequelize = require("./util/db");
-const Product = require("./model/product");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
-app.set("view engine", "pug");
-app.set("views", "./views");
+const products = require("./routes/products");
+const orders = require("./routes/orders");
+const customers = require("./routes/customers");
 
 // middleware to convert the input in JSON format
 app.use(express.json());
@@ -17,6 +17,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(helmet());
 app.use(morgan("short"));
+
+app.use("/api/products", products);
+app.use("/api/orders", orders);
+app.use("/api/customers", customers);
+
 // async function s() {
 //   try {
 //     const result = await sequelize.drop();
@@ -45,11 +50,6 @@ async function s() {
 // console.log("Application name: " + config.get("name"));
 // console.log("Mail server: " + config.get("mail.host"));
 // console.log("Mail password: " + config.get("mail.password"));
-
-// get request
-app.get("", (req, res) => {
-  res.render("views.pug", { title: "my expree", message: "bank" });
-});
 
 // s();
 const port = process.env.PORT || 3000;
