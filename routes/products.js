@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const addProduct = require("../controllers/products");
 
 router.get("/", (req, res) => {
   // get all products
-  res.send("Products");
+  res.send(result);
 });
 
 router.post("/add-product", (req, res) => {
   // add new product
-  res.send("add product");
+  addProduct(req, res);
 });
 
 // change existing product

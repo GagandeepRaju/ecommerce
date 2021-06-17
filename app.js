@@ -7,6 +7,10 @@ const sequelize = require("./util/db");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
+// models
+const User = require("./model/user");
+const Order = require("./model/order");
+
 const products = require("./routes/products");
 const orders = require("./routes/orders");
 const customers = require("./routes/customers");
@@ -22,17 +26,9 @@ app.use("/api/products", products);
 app.use("/api/orders", orders);
 app.use("/api/customers", customers);
 
-// async function s() {
-//   try {
-//     const result = await sequelize.drop();
-//     console.log(result);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-async function s() {
+async function b() {
   await sequelize
-    .sync()
+    .sync({ force: true })
     .then((result) => {
       console.log(result);
       // starting the server
@@ -50,10 +46,10 @@ async function s() {
 // console.log("Application name: " + config.get("name"));
 // console.log("Mail server: " + config.get("mail.host"));
 // console.log("Mail password: " + config.get("mail.password"));
+// b();
+// sequelize.sync();
 
-// s();
 const port = process.env.PORT || 3000;
-
 app.listen(port, () => {
   console.log(`Server is listing to ${port}`);
 });
