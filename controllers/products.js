@@ -1,14 +1,14 @@
 const Product = require("../model/product");
+const DataTypes = require("sequelize");
 
 async function addProduct(req, res) {
-  const product = await Product.create(
+  await Product.create(
     {
       title: "shirt",
       price: 10.99,
       imageUrl: "https://picsum.photos/200/300",
       description: "new shirt",
-      updatedAt: Date.now,
-      createdAt: Date,
+      updatedAt: DataTypes.NOW,
     },
     {
       fields: ["title", "price", "imageUrl", "description", "updatedAt"],

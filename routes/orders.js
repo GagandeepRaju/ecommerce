@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const createOrder = require("../controllers/orders");
 //
 router.get("/", (req, res) => {
   //
@@ -14,7 +14,7 @@ router.put("/:id", (req, res) => {
 
 router.post("/:id", (req, res) => {
   //
-  res.send("place an order");
+  createOrder(req, res);
 });
 
 router.delete("/:id", (req, res) => {

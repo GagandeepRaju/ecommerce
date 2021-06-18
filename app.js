@@ -10,6 +10,8 @@ const morgan = require("morgan");
 // models
 const User = require("./model/user");
 const Order = require("./model/order");
+const Product = require("./model/product");
+const OrderItem = require("./model/order_item");
 
 const products = require("./routes/products");
 const orders = require("./routes/orders");
@@ -30,7 +32,7 @@ async function b() {
   await sequelize
     .sync({ force: true })
     .then((result) => {
-      console.log(result);
+      // console.log(result);
       // starting the server
       const port = process.env.PORT || 3000;
       app.listen(port, () => {
