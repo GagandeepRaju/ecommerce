@@ -11,7 +11,6 @@ const morgan = require("morgan");
 const User = require("./model/user");
 const Order = require("./model/order");
 const Product = require("./model/product");
-const OrderItem = require("./model/order_item");
 
 const products = require("./routes/products");
 const orders = require("./routes/orders");
@@ -22,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(helmet());
-app.use(morgan("short"));
+// app.use(morgan("short"));
 
 app.use("/api/products", products);
 app.use("/api/orders", orders);

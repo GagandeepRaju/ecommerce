@@ -8,7 +8,7 @@ async function createOrder(req, res) {
       order_items_id: 1,
     },
     {
-      fields: ["customer_id", "order_items_id", "createdAt", "updatedAt"],
+      fields: ["id", "customer_id", "order_items_id"],
     }
   )
     .then((order) => {
