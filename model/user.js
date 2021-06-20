@@ -10,24 +10,19 @@ const User = sequelize.define("customers", {
     primaryKey: true,
   },
   first_name: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(50),
     allowNull: false,
   },
   last_name: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(30),
     allowNull: false,
   },
   email: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
   password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
 });

@@ -2,7 +2,6 @@ const config = require("config");
 const debug = require("debug")("app:startup");
 const express = require("express");
 const app = express();
-const Joi = require("joi");
 const sequelize = require("./util/db");
 const helmet = require("helmet");
 const morgan = require("morgan");

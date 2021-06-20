@@ -7,9 +7,15 @@ router.get("/", (req, res) => {
   res.send(result);
 });
 
-router.post("/add-product", (req, res) => {
+router.post("/add-product", async (req, res) => {
   // add new product
-  addProduct(req, res);
+  try {
+    const product = await addProduct(req.body);
+    console.log(product);
+    res.status(200).send(product);
+  } catch (error) {
+    res.status(404).send(error);
+  }
 });
 
 // change existing product

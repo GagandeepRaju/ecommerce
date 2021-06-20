@@ -1,15 +1,16 @@
 const DataTypes = require("sequelize");
 const sequelize = require("../util/db");
 
-const User = require("../model/user");
 const Product = require("../model/product");
+const Order = require("../model/order");
+const User = require("../model/user");
 
-const Order = sequelize.define("orders", {
+const Invoice = sequelize.define("order_invoice", {
   id: {
     type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
     allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
   },
   customer_id: {
     type: DataTypes.INTEGER,
@@ -28,6 +29,10 @@ const Order = sequelize.define("orders", {
       key: "id",
     },
   },
+  quantity: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-module.exports = Order;
+module.exports = Invoice;

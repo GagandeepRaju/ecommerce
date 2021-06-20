@@ -1,21 +1,23 @@
 const Order = require("../model/order");
-const DataTypes = require("sequelize");
 
-async function createOrder(req, res) {
-  const order = await Order.create(
+async function createOrder({ product_id, customer_id }) {
+  return await Order.create(
     {
-      customer_id: 1,
-      order_items_id: 1,
+      product_id: product_id,
+      customer_id: customer_id,
     },
     {
-      fields: ["id", "customer_id", "order_items_id"],
+      fields: ["product_id", "customer_id"],
     }
   )
     .then((order) => {
-      res.send(order);
+      return order;
     })
     .catch((err) => {
-      console.log(err);
+      return err;
+    })
+    .finally((result) => {
+      return result;
     });
 }
 
