@@ -1,21 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const createUser = require("../controllers/customer");
-const validateInput = require("../controllers/customer");
+const { createUser, validateInput } = require("../controllers/customer");
 
 router.get("/", (req, res) => {
   res.send("all customers");
 });
 
 router.post("/addprofile", async (req, res) => {
-  const { data, error } = validateInput(req.body);
+  const { user, error } = validateInput(req.body);
   if (error) res.status(400).send({ error: error.details[0].message });
 
   try {
-    const data = await createUser(req.body);
-    res.status(200).send(data);
+    const result = await createUser(user);
+    res.status(200).send(result);
   } catch (err) {
-    res.status(400).send(err);
+    res.status(500).send(err);
   }
 });
 //

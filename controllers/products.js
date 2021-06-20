@@ -1,6 +1,16 @@
 const Product = require("../model/product");
 const DataTypes = require("sequelize");
 
+const Joi = require("joi");
+
+const schema = Joi.object({
+  title: Joi.string().min(5).required(),
+  price: Joi.number().min(0.99).required(),
+  imageUrl: Joi.string().required(),
+  description: Joi.string().required(),
+  category: Joi.string().required(),
+});
+
 async function addProduct({ title, price, imageUrl, description, category }) {
   return await Product.create(
     {
@@ -30,4 +40,12 @@ async function addProduct({ title, price, imageUrl, description, category }) {
     });
 }
 
-module.exports = addProduct;
+function validateInput(data) {
+  const { value, error } = schema.validate(data);
+  return { product: value, error: error };
+}
+
+module.exports = {
+  addProduct,
+  validateInput,
+};

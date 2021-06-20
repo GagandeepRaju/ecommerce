@@ -14,37 +14,32 @@ const schema = Joi.object({
 });
 // const Schema = joi.
 
-async function createUser(data) {
-  const { value, error } = validateInput(data);
-
-  if (error) {
-    return { data: value, error: error };
-  } else {
-    const { first_name, last_name, email, password } = data;
-    return await User.create(
-      {
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        password: password,
-      },
-      {
-        fields: ["first_name", "last_name", "email", "password"],
-      }
-    )
-      .then((user) => {
-        return { value: user }, { error: false };
-      })
-      .catch((err) => {
-        return { value: false }, { error: err };
-      });
-  }
+async function createUser({ first_name, last_name, email, password }) {
+  return await User.create(
+    {
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      password: password,
+    },
+    {
+      fields: ["first_name", "last_name", "email", "password"],
+    }
+  )
+    .then((user) => {
+      return user;
+    })
+    .catch((err) => {
+      return err;
+    });
 }
 
 function validateInput(data) {
   const { value, error } = schema.validate(data);
-  return { userProfile: value, error };
+  return { user: value, error };
 }
 
-module.exports = createUser;
-module.exports = validateInput;
+module.exports = {
+  createUser,
+  validateInput,
+};

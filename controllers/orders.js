@@ -1,10 +1,16 @@
 const Order = require("../model/order");
+const Joi = require("joi");
+
+const schema = Joi.object({
+  customer_id: Joi.number().integer().required(),
+  product_id: Joi.number().integer().required(),
+});
 
 async function createOrder({ product_id, customer_id }) {
   return await Order.create(
     {
-      product_id: product_id,
-      customer_id: customer_id,
+      product_id: parseInt(product_id),
+      customer_id: parseInt(customer_id),
     },
     {
       fields: ["product_id", "customer_id"],
@@ -15,10 +21,15 @@ async function createOrder({ product_id, customer_id }) {
     })
     .catch((err) => {
       return err;
-    })
-    .finally((result) => {
-      return result;
     });
 }
 
-module.exports = createOrder;
+function validateInput(data) {
+  const { value, error } = schema.validate(data);
+  return { order: value, error: error };
+}
+
+module.exports = {
+  validateInput,
+  createOrder,
+};

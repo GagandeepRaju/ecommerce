@@ -1,6 +1,6 @@
 const express = require("express");
+const { createOrder, validateInput } = require("../controllers/orders");
 const router = express.Router();
-const createOrder = require("../controllers/orders");
 //
 router.get("/", (req, res) => {
   //
@@ -14,16 +14,14 @@ router.put("/:id", (req, res) => {
 
 router.post("/:id", async (req, res) => {
   //
+  const { order, error } = validateInput(req.body);
+  if (error) res.status(400).send({ error: error.details[0].message });
+
   try {
-    const result = await createOrder(req.body);
-    if (result) {
-      console.log(result);
-    }
-    res.statusCode(400).send(result.error);
-    // res.status(200).send(result);
-  } catch (error) {
-    console.log(error);
-    res.statusCode(400).send(error);
+    const result = await createOrder(order);
+    res.status(200).send(result);
+  } catch (err) {
+    res.status(500).send(err);
   }
 });
 
