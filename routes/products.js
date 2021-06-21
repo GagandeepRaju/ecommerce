@@ -1,10 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const { addProduct, validateInput } = require("../controllers/products");
+const { QueryTypes } = require("sequelize");
+const sequelize = require("../util/db");
 
-router.get("/", (req, res) => {
-  // get all products
-  res.send(result);
+router.get("/", async (req, res) => {
+  try {
+    const products = await sequelize.query(
+      `select title, category, description, price from products`,
+      {
+        type: QueryTypes.SELECT,
+      }
+    );
+    if (products.length > 0) {
+      res.status(200).send(products);
+    } else res.status(404).send("No order found");
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 router.post("/add-product", async (req, res) => {

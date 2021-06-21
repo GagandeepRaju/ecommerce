@@ -14,6 +14,8 @@ const Order = sequelize.define("orders", {
   customer_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    onDelete: "NO ACTION",
+    onUpdate: "NO ACTION",
     references: {
       model: User,
       key: "id",
@@ -22,6 +24,8 @@ const Order = sequelize.define("orders", {
   product_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    onDelete: "NO ACTION",
+    onUpdate: "NO ACTION",
     references: {
       model: Product,
       key: "id",
