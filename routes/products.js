@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { addProduct, validateInput } = require("../controllers/products");
-const { QueryTypes } = require("sequelize");
+const { QueryTypes, where } = require("sequelize");
 const sequelize = require("../util/db");
+const Product = require("../model/product");
 
 router.get("/", async (req, res) => {
   try {
@@ -33,15 +34,43 @@ router.post("/add-product", async (req, res) => {
 });
 
 // change existing product
-router.put("/:id", (req, res) => {
+router.put("/updateProduct/:id", async (req, res) => {
   //
-  res.send("product updated");
+  const { product, error } = validateInput(req.body);
+  if (error) res.status(400).send({ error: error.details[0].message });
+
+  try {
+    let productToChange = await Product.findOne({
+      where: { id: req.params.id },
+    });
+    if (productToChange.getDataValue("id") == req.params.id) {
+      productToChange.title = product.title;
+      productToChange.category = product.category;
+      productToChange.price = product.price;
+      productToChange.imageUrl = product.imageUrl;
+      productToChange.description = product.description;
+      const result = await productToChange.save({
+        fields: ["title", "category", "price", "imageUrl", "description"],
+      });
+      res.status(200).send(result);
+    } else res.status(401).send("Product not found.");
+  } catch (err) {
+    res.status(404).send(err);
+  }
 });
 
 // delete product
-router.delete("/:id", (req, res) => {
+router.delete("/product/:id", async (req, res) => {
   //
-  res.send("product delete");
+  try {
+    let product = await Product.findOne({ where: { id: req.params.id } });
+    if (product instanceof Product) {
+      const result = await product.destroy();
+      res.status(200).send(result);
+    } else res.status(404).send("Product has already been deleted");
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 module.exports = router;
