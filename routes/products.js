@@ -39,19 +39,13 @@ router.put("/updateProduct/:id", async (req, res) => {
   const { product, error } = validateInput(req.body);
   if (error) res.status(400).send({ error: error.details[0].message });
 
+  const productToChange = await Product.findOne({
+    where: { id: req.params.id },
+  });
+
   try {
-    let productToChange = await Product.findOne({
-      where: { id: req.params.id },
-    });
     if (productToChange.getDataValue("id") == req.params.id) {
-      productToChange.title = product.title;
-      productToChange.category = product.category;
-      productToChange.price = product.price;
-      productToChange.imageUrl = product.imageUrl;
-      productToChange.description = product.description;
-      const result = await productToChange.save({
-        fields: ["title", "category", "price", "imageUrl", "description"],
-      });
+      const result = await productToChange.update(product);
       res.status(200).send(result);
     } else res.status(401).send("Product not found.");
   } catch (err) {

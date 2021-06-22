@@ -34,8 +34,20 @@ router.post("/addprofile", async (req, res) => {
   }
 });
 //
-router.put("/profile", (req, res) => {
-  res.send("update customer profile");
+router.put("/profile/:id", async (req, res) => {
+  const { user, error } = validateInput(req.body);
+  if (error) res.status(400).send({ error: error.details[0].message });
+
+  const userDB = await User.findOne({ where: { id: req.params.id },});
+
+  try {
+    if (userDB.getDataValue("id") == req.params.id) {
+      const result = await userDB.update(user);
+      res.status(200).send(result);
+    } else res.status(401).send("User not found.");
+  } catch (err) {
+    res.status(404).send(err);
+  }
 });
 
 router.delete("/profile", async (req, res) => {
