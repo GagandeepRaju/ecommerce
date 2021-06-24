@@ -10,6 +10,7 @@ const morgan = require("morgan");
 const User = require("./model/user");
 const Order = require("./model/order");
 const Product = require("./model/product");
+const UserLogin = require("./model/userlogin");
 
 const products = require("./routes/products");
 const orders = require("./routes/orders");
