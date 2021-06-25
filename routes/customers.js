@@ -4,6 +4,7 @@ const router = express.Router();
 const { createUser, validateInput } = require("../controllers/customer");
 const User = require("../model/user");
 const sequelize = require("../util/db");
+const bcrypt = require("bcrypt");
 
 router.get("/", async (req, res) => {
   try {
@@ -26,19 +27,29 @@ router.post("/addprofile", async (req, res) => {
   const { user, error } = validateInput(req.body);
   if (error) res.status(400).send({ error: error.details[0].message });
 
-  try {
-    const result = await createUser(user);
-    res.status(200).send(result);
-  } catch (err) {
-    res.status(500).send(err);
-  }
+  const isUser = await User.findOne({ where: { email: req.body.email } });
+
+  if (isUser != null) {
+    res
+      .status(400)
+      .send("User already exists. Try login or forget password options");
+  } else
+    try {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+      user.password = hashedPassword;
+      const result = await createUser(user);
+      res.status(200).send(result);
+    } catch (err) {
+      res.status(500).send(err);
+    }
 });
 //
 router.put("/profile/:id", async (req, res) => {
   const { user, error } = validateInput(req.body);
   if (error) res.status(400).send({ error: error.details[0].message });
 
-  const userDB = await User.findOne({ where: { id: req.params.id },});
+  const userDB = await User.findOne({ where: { id: req.params.id } });
 
   try {
     if (userDB.getDataValue("id") == req.params.id) {

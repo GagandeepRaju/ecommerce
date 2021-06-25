@@ -1,4 +1,5 @@
 {
+    "jwtPrivateKey": "eco_jwtPrivateKey",
     "mail": {
         "password": "app_password"
     }
