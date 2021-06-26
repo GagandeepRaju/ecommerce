@@ -1,10 +1,12 @@
+const config = require("config");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const express = require("express");
 const { QueryTypes } = require("sequelize");
 const router = express.Router();
 const { createUser, validateInput } = require("../controllers/customer");
 const User = require("../model/user");
 const sequelize = require("../util/db");
-const bcrypt = require("bcrypt");
 
 router.get("/", async (req, res) => {
   try {
@@ -38,8 +40,9 @@ router.post("/addprofile", async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(req.body.password, salt);
       user.password = hashedPassword;
-      const result = await createUser(user);
-      res.status(200).send(result);
+      const newUser = await createUser(user);
+      const token = jwt.sign({ _id: newUser.id }, config.get("jwtPrivateKey"));
+      res.header("x-auth-token", token).send(newUser);
     } catch (err) {
       res.status(500).send(err);
     }

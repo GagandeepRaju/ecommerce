@@ -10,7 +10,6 @@ const morgan = require("morgan");
 const User = require("./model/user");
 const Order = require("./model/order");
 const Product = require("./model/product");
-const UserLogin = require("./model/userlogin");
 
 const products = require("./routes/products");
 const orders = require("./routes/orders");
@@ -29,14 +28,10 @@ app.use("/api/orders", orders);
 app.use("/api/customers", customers);
 app.use("/api/login/", auth);
 
-// console.log(config.get("jwtPrivateKey"));
-
-// if (!config.get("jwtPrivateKey")) {
-//   console.error("Fatal Error: jwtPrivatekey not found");
-//   process.exit(1);
-// }
-
-console.log(process.env.econKey);
+if (!config.get("jwtPrivateKey")) {
+  console.error("Fatal Error: jwtPrivatekey not found");
+  process.exit(1);
+}
 
 async function b() {
   await sequelize

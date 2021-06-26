@@ -1,5 +1,6 @@
 {
     "name": "ecommernce app for development",
+    "jwtPrivateKey": "eco_jwtPrivateKey",
     "mail": {
         "host": "dev-mail-server"
     }

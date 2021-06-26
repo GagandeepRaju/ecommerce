@@ -4,6 +4,7 @@ const Order = require("../model/order");
 const { QueryTypes } = require("sequelize");
 const router = express.Router();
 const sequelize = require("../util/db");
+const auth = require("../middleware/auth");
 
 //
 router.get("/", async (req, res) => {
@@ -38,7 +39,7 @@ router.put("/changeOrder", async (req, res) => {
   }
 });
 
-router.post("/placeorder", async (req, res) => {
+router.post("/placeorder", auth, async (req, res) => {
   //add middleware latter to check if user exits
   const { order, error } = validateInput(req.body);
   if (error) res.status(400).send({ error: error.details[0].message });
